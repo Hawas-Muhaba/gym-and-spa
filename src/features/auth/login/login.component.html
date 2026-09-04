@@ -1,0 +1,56 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <div class="auth-logo">🏋️</div>
+      <mat-card-title>Welcome Back</mat-card-title>
+      <p class="auth-subtitle">Sign in to Gym &amp; Spa Manager</p>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" placeholder="manager@gym.com" />
+          @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) {
+            <mat-error>Email is required</mat-error>
+          }
+          @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')) {
+            <mat-error>Enter a valid email</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput formControlName="password" [type]="showPassword ? 'text' : 'password'" />
+          <button type="button" mat-icon-button matSuffix (click)="showPassword = !showPassword" tabindex="-1">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
+            <mat-error>Password is required</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        <button mat-flat-button class="auth-btn" type="submit"
+                [disabled]="loginForm.invalid || isLoading()">
+          @if (isLoading()) {
+            <mat-spinner diameter="20" color="accent" style="display:inline-block;margin-right:8px" />
+          }
+          {{ isLoading() ? 'Signing in…' : 'Sign In' }}
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <div class="auth-link-row">
+      <span>Don't have an account?</span>
+      <a class="auth-link" routerLink="/register">Create one</a>
+    </div>
+  </mat-card>
+</div>

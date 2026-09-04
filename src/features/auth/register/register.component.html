@@ -1,0 +1,90 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <div class="auth-logo">🏋️</div>
+      <mat-card-title>Create Account</mat-card-title>
+      <p class="auth-subtitle">Join Gym &amp; Spa Manager</p>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Full Name</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="fullName" placeholder="Jane Smith" />
+          @if (registerForm.get('fullName')?.touched && registerForm.get('fullName')?.hasError('required')) {
+            <mat-error>Full name is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" placeholder="jane@gym.com" />
+          @if (registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')) {
+            <mat-error>Email is required</mat-error>
+          }
+          @if (registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')) {
+            <mat-error>Enter a valid email</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput formControlName="password" [type]="showPassword ? 'text' : 'password'" />
+          <button type="button" mat-icon-button matSuffix (click)="showPassword = !showPassword" tabindex="-1">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')) {
+            <mat-error>Password is required</mat-error>
+          }
+          @if (registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')) {
+            <mat-error>Password must be at least 6 characters</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput formControlName="phone" type="tel" placeholder="+1 555 000 0000" />
+          @if (registerForm.get('phone')?.touched && registerForm.get('phone')?.hasError('required')) {
+            <mat-error>Phone is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Role</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-select formControlName="role">
+            @for (role of roles; track role) {
+              <mat-option [value]="role">{{ role }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <div class="error-banner">{{ errorMessage() }}</div>
+        }
+        @if (successMessage()) {
+          <div class="success-banner">{{ successMessage() }}</div>
+        }
+
+        <button mat-flat-button class="auth-btn" type="submit"
+                [disabled]="registerForm.invalid || isLoading()">
+          @if (isLoading()) {
+            <mat-spinner diameter="20" color="accent" style="display:inline-block;margin-right:8px" />
+          }
+          {{ isLoading() ? 'Creating account…' : 'Create Account' }}
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <div class="auth-link-row">
+      <span>Already have an account?</span>
+      <a class="auth-link" routerLink="/login">Sign in</a>
+    </div>
+  </mat-card>
+</div>

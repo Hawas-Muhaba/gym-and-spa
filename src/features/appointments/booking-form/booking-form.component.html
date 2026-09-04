@@ -1,0 +1,52 @@
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="booking-page">
+  <header class="page-heading"><p class="eyebrow">Reserve your time</p><h2>Book an appointment</h2><p>Choose a service, then find a time that works for you.</p></header>
+
+  @if (clients().length > 0) {
+    <section class="step-section">
+      <div class="step-label"><span>00</span><div><strong>Select Client</strong><small>Booking on behalf of a client</small></div></div>
+      <div class="filters">
+        <label>Client
+          <select [formControl]="selectedClientId">
+            @for (c of clients(); track c.id) {
+              <option [value]="c.id">{{ c.fullName }} ({{ c.phone }})</option>
+            }
+          </select>
+        </label>
+      </div>
+    </section>
+  }
+
+  <section class="step-section"><div class="step-label"><span>01</span><div><strong>Choose a service</strong><small>What are you in the mood for?</small></div></div>
+    <div class="service-grid">
+      @for (service of services(); track service.id) {
+        <button class="service-card" type="button" [class.selected]="bookingForm.controls.serviceId.value === service.id" (click)="bookingForm.controls.serviceId.setValue(service.id)">
+          <span class="service-icon">✦</span><span class="service-name">{{ service.name }}</span><span class="service-meta">{{ service.durationMinutes }} min <b>·</b> {{ service.price | number:'1.0-0' }} ETB</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="step-section"><div class="step-label"><span>02</span><div><strong>Find your time</strong><small>Availability updates in real time.</small></div></div>
+    <div class="filters"><label>Date<input type="date" formControlName="date" [min]="today"></label><label>Staff member<select formControlName="staffId"><option [ngValue]="null">Select a specialist</option>@for (staff of staffList(); track staff.id) { <option [ngValue]="staff.id">{{ staff.fullName }}</option> }</select></label></div>
+    <div class="slot-heading"><span>Available slots</span>@if (isLoadingSlots()) { <small>Checking live availability...</small> }</div>
+    <div class="slot-grid">
+      @for (slot of availableSlots(); track slot.startTime) { <button class="slot" type="button" [class.selected]="bookingForm.controls.startTime.value === slot.startTime" (click)="bookingForm.controls.startTime.setValue(slot.startTime)">{{ slot.startTime | date:'shortTime' }}</button> }
+      @if (!isLoadingSlots() && availableSlots().length === 0) { <p class="empty-slots">Select a date and specialist to see available times.</p> }
+    </div>
+  </section>
+
+  @if (selectedService() && bookingForm.controls.startTime.value) {
+    <section class="summary-section">
+      <div class="summary-card">
+        <h4>Booking Summary</h4>
+        <div class="summary-row"><span>Service:</span> <strong>{{ selectedService()?.name }} ({{ selectedService()?.durationMinutes }} min)</strong></div>
+        <div class="summary-row"><span>Specialist:</span> <strong>{{ selectedStaff()?.fullName }}</strong></div>
+        <div class="summary-row"><span>Date & Time:</span> <strong>{{ bookingForm.controls.startTime.value | date:'medium' }}</strong></div>
+        <div class="summary-row"><span>Price:</span> <strong>{{ selectedService()?.price | number:'1.0-0' }} ETB</strong></div>
+      </div>
+    </section>
+  }
+
+  @if (errorMessage()) { <p class="booking-error">{{ errorMessage() }}</p> }
+  <button class="submit-button" type="submit" [disabled]="bookingForm.invalid || !clientId() || isSubmitting()">{{ isSubmitting() ? 'Confirming...' : 'Confirm appointment' }} <span>→</span></button>
+</form>

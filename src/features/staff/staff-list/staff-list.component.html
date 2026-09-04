@@ -1,0 +1,111 @@
+<div class="staff-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Team Management</p>
+      <h2>Staff Members</h2>
+      <p>Manage specialists, commission rates, and track performance.</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="openCreate()">
+      <mat-icon>person_add</mat-icon> Add Staff
+    </button>
+  </header>
+
+  @if (showForm()) {
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>{{ editingStaffId() !== null ? 'Edit Staff Member' : 'New Staff Member' }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="staffForm" (ngSubmit)="saveStaff()" class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="fullName" placeholder="e.g. John Doe" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" placeholder="e.g. +251912345678" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Commission Rate (0.0 to 1.0)</mat-label>
+            <input matInput type="number" step="0.05" min="0" max="1" formControlName="commissionRate" />
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="cancelForm()">Cancel</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="staffForm.invalid">Save</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  @if (selectedStaff(); as detail) {
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <div class="detail-header">
+          <mat-card-title>{{ detail.fullName }} — Staff Overview</mat-card-title>
+          <button mat-icon-button (click)="closeDetails()"><mat-icon>close</mat-icon></button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="label">Phone</span>
+            <strong>{{ detail.phone }}</strong>
+          </div>
+          <div class="stat-item">
+            <span class="label">Commission</span>
+            <strong>{{ (detail.commissionRate * 100).toFixed(0) }}%</strong>
+          </div>
+          <div class="stat-item">
+            <span class="label">Total Appointments</span>
+            <strong>{{ detail.totalAppointments }}</strong>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="table-container mat-elevation-z1">
+    <table mat-table [dataSource]="staffList()">
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef>Full Name</th>
+        <td mat-cell *matCellDef="let s">{{ s.fullName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef>Phone</th>
+        <td mat-cell *matCellDef="let s">{{ s.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="commissionRate">
+        <th mat-header-cell *matHeaderCellDef>Commission Rate</th>
+        <td mat-cell *matCellDef="let s">{{ (s.commissionRate * 100).toFixed(0) }}%</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let s" class="actions-cell">
+          <button mat-icon-button (click)="viewDetails(s.id)" title="View Details">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="editStaff(s)" title="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteStaff(s)" title="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    @if (!isLoading() && staffList().length === 0) {
+      <div class="empty-state">No staff members found.</div>
+    }
+  </div>
+</div>

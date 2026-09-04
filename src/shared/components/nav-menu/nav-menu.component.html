@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+  <span>Gym System</span>
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/book">Book Appointment</a>
+
+  @if (isStaffOrManager()) {
+    <a mat-button routerLink="/dashboard/clients">Clients</a>
+    <a mat-button routerLink="/dashboard/schedule">Schedule</a>
+    <a mat-button routerLink="/dashboard/memberships/expiring">Renewals</a>
+  }
+
+  @if (isManager()) {
+    <a mat-button routerLink="/reports/commission">Reports</a>
+  }
+
+  <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>

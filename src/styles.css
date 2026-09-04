@@ -1,1 +1,182 @@
-/* You can add global styles to this file, and also import other style files */
+/* Angular Material baseline plus the application's light luxury palette. */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --ink: #252522;
+  --forest: #202522;
+  --paper: #fbfaf7;
+  --canvas: #f5f2ec;
+  --gold: #d6a85e;
+  --muted: #788078;
+  --line: #e6e1d7;
+}
+
+/* Global reset & base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/* ============================================================
+   AUTH PAGES  (Login & Register)
+   ============================================================ */
+.login-container,
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 12% 8%, rgba(214, 168, 94, .2), transparent 34%),
+              linear-gradient(135deg, #202522 0%, #2e3830 62%, #596157 100%);
+  padding: 1.5rem;
+}
+
+.login-card,
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 4px !important;
+  background: rgba(251, 250, 247, .97) !important;
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, .2) !important;
+  box-shadow: 0 28px 70px rgba(14, 19, 15, .28) !important;
+  padding: 2.5rem 2.5rem 2rem !important;
+}
+
+/* Card header */
+.login-card mat-card-header,
+.register-card mat-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 0 !important;
+}
+
+.login-card mat-card-title,
+.register-card mat-card-title {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: var(--ink) !important;
+  font-family: Georgia, serif;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Logo / icon badge above the title */
+.auth-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 2px;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 25px rgba(92, 67, 30, .25);
+}
+
+/* Form fields — override Angular Material colours for dark theme */
+.login-card .mat-mdc-form-field,
+.register-card .mat-mdc-form-field {
+  --mdc-outlined-text-field-label-text-color: var(--muted);
+  --mdc-outlined-text-field-input-text-color: var(--ink);
+  --mdc-outlined-text-field-outline-color: #d5d0c7;
+  --mdc-outlined-text-field-hover-outline-color: var(--gold);
+  --mdc-outlined-text-field-focus-outline-color: var(--gold);
+  --mdc-outlined-text-field-caret-color: var(--gold);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+/* Submit button */
+.auth-btn {
+  width: 100%;
+  height: 48px !important;
+  border-radius: 2px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em;
+  background: var(--forest) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  transition: box-shadow 0.2s, transform 0.1s !important;
+  margin-top: 0.5rem;
+}
+.auth-btn:hover:not([disabled]) {
+  box-shadow: 0 8px 20px rgba(32, 37, 34, .2) !important;
+  transform: translateY(-1px);
+}
+.auth-btn:disabled {
+  opacity: 0.6 !important;
+}
+
+/* Link row below form */
+.auth-link-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.auth-link {
+  color: #9b7946;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.auth-link:hover { color: #6d522e; }
+
+/* Error / Success banners inside auth forms */
+.error-banner {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+.success-banner {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #86efac;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ============================================================
+   DASHBOARD / NAV SHELL
+   ============================================================ */
+mat-toolbar {
+  background: rgba(15, 15, 20, 0.92) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 24px rgba(0, 0, 0, 0.4);
+  font-family: 'Inter', sans-serif !important;
+}
+mat-toolbar span.spacer { flex: 1; }
+
+/* Utility */
+.mat-mdc-card { color: inherit !important; }

@@ -1,0 +1,40 @@
+:host { display: block; }
+.booking-page { max-width: 980px; }
+.page-heading { margin-bottom: 42px; }
+.eyebrow { margin: 0 0 10px; color: #9b7946; font: 600 10px Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+h2 { margin: 0; color: #252522; font: 400 clamp(30px, 5vw, 46px)/1.05 Georgia, serif; }
+.page-heading > p:last-child { margin: 13px 0 0; color: #788078; font: 14px/1.6 Arial, sans-serif; }
+.step-section { padding: 0 0 38px; margin-bottom: 38px; border-bottom: 1px solid #e1ddd4; }
+.step-label { display: flex; align-items: center; gap: 13px; margin-bottom: 22px; }
+.step-label > span { color: #9b7946; font: 700 12px Arial, sans-serif; }
+.step-label strong, .step-label small { display: block; }
+.step-label strong { color: #252522; font: 600 15px Arial, sans-serif; }
+.step-label small { margin-top: 4px; color: #8b9086; font: 12px Arial, sans-serif; }
+.service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.service-card { min-height: 132px; padding: 18px; text-align: left; border: 1px solid #ddd8ce; border-radius: 2px; background: #fbfaf7; color: #252522; cursor: pointer; transition: border-color .15s, transform .15s, box-shadow .15s; }
+.service-card:hover { transform: translateY(-2px); border-color: #c3a16c; box-shadow: 0 8px 18px rgba(55, 48, 33, .08); }
+.service-card.selected { border: 2px solid #b3864a; padding: 17px; background: #fffdf8; }
+.service-icon { display: block; margin-bottom: 19px; color: #b3864a; font-size: 17px; }
+.service-name { display: block; font: 600 14px Arial, sans-serif; }
+.service-meta { display: block; margin-top: 8px; color: #7c827a; font: 11px Arial, sans-serif; }
+.service-meta b { margin: 0 4px; color: #c0b39e; }
+.filters { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+label { display: grid; gap: 8px; color: #687067; font: 600 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+input, select { width: 100%; height: 46px; padding: 0 12px; border: 1px solid #d6d1c7; border-radius: 2px; background: #fbfaf7; color: #252522; font: 14px Arial, sans-serif; outline: none; }
+input:focus, select:focus { border-color: #b3864a; box-shadow: 0 0 0 2px rgba(179, 134, 74, .12); }
+.slot-heading { display: flex; justify-content: space-between; margin: 28px 0 12px; color: #252522; font: 600 12px Arial, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+.slot-heading small { color: #9b7946; font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; }
+.slot-grid { display: flex; flex-wrap: wrap; gap: 9px; }
+.slot { min-width: 92px; padding: 11px 14px; border: 1px solid #d6d1c7; border-radius: 2px; background: #fbfaf7; color: #454a44; font: 600 12px Arial, sans-serif; cursor: pointer; }
+.slot:hover, .slot.selected { border-color: #b3864a; background: #202522; color: #fff; }
+.summary-section { margin-bottom: 28px; }
+.summary-card { padding: 18px 22px; border: 1px solid #c3a16c; background: #fffdf8; border-radius: 4px; }
+.summary-card h4 { margin: 0 0 12px; font: 600 14px Arial, sans-serif; color: #9b7946; text-transform: uppercase; letter-spacing: 0.08em; }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+.summary-row span { color: #687067; }
+.summary-row strong { color: #202522; font-weight: 600; }
+.booking-error { margin: 0 0 18px; color: #a14f3f; font: 13px Arial, sans-serif; }
+.submit-button { display: flex; align-items: center; justify-content: space-between; width: 220px; min-height: 48px; padding: 0 16px 0 20px; border: 0; border-radius: 2px; background: #202522; color: #fff; font: 600 12px Arial, sans-serif; cursor: pointer; }
+.submit-button span { color: #d6a85e; font-size: 21px; }
+.submit-button:disabled { opacity: .42; cursor: not-allowed; }
+@media (max-width: 600px) { .page-heading { margin-bottom: 30px; } .filters { grid-template-columns: 1fr; } .service-grid { grid-template-columns: 1fr 1fr; } .service-card { min-height: 125px; padding: 14px; } .service-card.selected { padding: 13px; } .submit-button { width: 100%; } }

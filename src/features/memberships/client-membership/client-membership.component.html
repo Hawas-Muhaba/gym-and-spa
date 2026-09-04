@@ -1,0 +1,101 @@
+<div class="membership-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Personal Access</p>
+      <h2>My Membership</h2>
+      <p>Track your active gym access, days remaining, and spa booking history.</p>
+    </div>
+    <a mat-flat-button color="primary" routerLink="/book">
+      <mat-icon>calendar_month</mat-icon> Book New Session
+    </a>
+  </header>
+
+  @if (isLoading()) {
+    <div class="loading-state">Loading your membership status...</div>
+  } @else {
+    @if (membership(); as m) {
+      <div class="membership-hero-card" [class.active-pass]="m.isActive" [class.expired-pass]="!m.isActive">
+        <div class="pass-top">
+          <div class="pass-brand">
+            <span class="brand-badge">GS PASS</span>
+            <h3>{{ clientProfile()?.fullName }}</h3>
+          </div>
+          <mat-chip [highlighted]="m.isActive" [color]="m.isActive ? 'primary' : 'warn'">
+            {{ m.isActive ? 'Active Member' : 'Expired' }}
+          </mat-chip>
+        </div>
+
+        <div class="pass-stats">
+          <div class="stat-block">
+            <span class="stat-label">Days Remaining</span>
+            <strong class="days-num">{{ daysRemaining() }}</strong>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">Valid From</span>
+            <span>{{ m.startDate | date:'mediumDate' }}</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">Valid Until</span>
+            <span>{{ m.expiryDate | date:'mediumDate' }}</span>
+          </div>
+        </div>
+
+        @if (!m.isActive) {
+          <div class="expired-alert">
+            <mat-icon>warning</mat-icon>
+            <span>Your membership has expired. Please visit the front desk to renew your pass.</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="no-pass-card">
+        <mat-icon class="card-icon">card_membership</mat-icon>
+        <h3>No Active Membership</h3>
+        <p>You currently do not have a gym membership. Visit our front desk or talk to our staff to activate a monthly pass.</p>
+        <a mat-stroked-button color="primary" routerLink="/book">Book Individual Spa Session</a>
+      </div>
+    }
+
+    <section class="appointments-history">
+      <div class="section-title">
+        <h3>My Booking History</h3>
+        <span>{{ appointments().length }} sessions recorded</span>
+      </div>
+
+      <div class="table-container mat-elevation-z1">
+        <table mat-table [dataSource]="appointments()">
+          <ng-container matColumnDef="serviceName">
+            <th mat-header-cell *matHeaderCellDef>Service</th>
+            <td mat-cell *matCellDef="let a"><strong>{{ a.serviceName }}</strong></td>
+          </ng-container>
+
+          <ng-container matColumnDef="staffName">
+            <th mat-header-cell *matHeaderCellDef>Specialist</th>
+            <td mat-cell *matCellDef="let a">{{ a.staffName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="startTime">
+            <th mat-header-cell *matHeaderCellDef>Date & Time</th>
+            <td mat-cell *matCellDef="let a">{{ a.startTime | date:'medium' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let a">
+              <span class="status-pill" [class.confirmed]="a.status === 'Confirmed'" [class.completed]="a.status === 'Completed'" [class.cancelled]="a.status === 'Cancelled'">
+                {{ a.status }}
+              </span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        @if (appointments().length === 0) {
+          <div class="empty-table">You have no appointment bookings yet.</div>
+        }
+      </div>
+    </section>
+  }
+</div>

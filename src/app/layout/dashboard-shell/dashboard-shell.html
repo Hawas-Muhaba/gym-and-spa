@@ -1,0 +1,70 @@
+<div class="shell">
+	<aside class="sidebar">
+		<a class="brand" routerLink="/book"><span class="brand-mark">GS</span><span>Gym &amp; Spa</span></a>
+		<p class="eyebrow">Workspace</p>
+		<nav class="nav-list">
+			@if (role() === 'Client') {
+			<a routerLink="/book" routerLinkActive="active"><mat-icon>calendar_add_on</mat-icon><span>Book
+					appointment</span></a>
+			<a routerLink="/my-membership" routerLinkActive="active"><mat-icon>card_membership</mat-icon><span>My
+					membership</span></a>
+			} @else {
+			<a routerLink="/dashboard/schedule"
+				routerLinkActive="active"><mat-icon>event</mat-icon><span>Schedule</span></a>
+			<a routerLink="/dashboard/clients" routerLinkActive="active"><mat-icon>groups</mat-icon><span>Client
+					CRM</span></a>
+			<a routerLink="/dashboard/memberships/expiring"
+				routerLinkActive="active"><mat-icon>autorenew</mat-icon><span>Memberships</span></a>
+			@if (role() === 'Manager') {
+			<a routerLink="/dashboard/staff" routerLinkActive="active"><mat-icon>badge</mat-icon><span>Staff</span></a>
+			<a routerLink="/dashboard/services" routerLinkActive="active"><mat-icon>spa</mat-icon><span>Services</span></a>
+			<a routerLink="/reports/commission" routerLinkActive="active"><mat-icon>payments</mat-icon><span>Commission
+					reports</span></a>
+			}
+			}
+		</nav>
+		<div class="sidebar-foot"><span class="status-dot"></span> Addis Ababa workspace</div>
+	</aside>
+
+	<main class="main-area">
+		<header class="topbar">
+			<div>
+				<p class="kicker">Good to see you</p>
+				<h1>{{ displayName() }}</h1>
+			</div>
+			<div class="topbar-actions">
+				<div class="notif-wrapper">
+					<button class="icon-button" type="button" (click)="toggleNotifications()"
+						aria-label="Notifications"><mat-icon>notifications_none</mat-icon>
+						@if (unreadCount() > 0) {
+							<span class="notification-badge">{{ unreadCount() }}</span>
+						}
+					</button>
+					@if (showNotifications()) {
+						<div class="notif-dropdown">
+							<div class="notif-dropdown-header">
+								<strong>Live Bookings</strong>
+								<small>{{ notifications().length }} recent</small>
+							</div>
+							<div class="notif-dropdown-list">
+								@for (item of notifications(); track item.id) {
+									<div class="notif-item">
+										<p>{{ item.message }}</p>
+										<time>{{ item.time | date:'shortTime' }}</time>
+									</div>
+								}
+								@if (notifications().length === 0) {
+									<div class="notif-empty">No live bookings received yet.</div>
+								}
+							</div>
+						</div>
+					}
+				</div>
+				<div class="profile"><span class="avatar">{{ displayName().charAt(0).toUpperCase()
+						}}</span><span><strong>{{ displayName() }}</strong><small>{{ role() }}</small></span></div>
+				<button class="logout-button" type="button" (click)="logout()">Log out</button>
+			</div>
+		</header>
+		<section class="content"><router-outlet /></section>
+	</main>
+</div>

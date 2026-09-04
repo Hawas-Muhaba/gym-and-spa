@@ -1,0 +1,44 @@
+<div class="radar-page">
+  <header class="page-heading">
+    <p class="eyebrow">Retention radar</p>
+    <h2>Expiring memberships</h2>
+    <p>Reach out before clients drift away.</p>
+  </header>
+  <section class="radar-controls"><label>Look ahead <strong>{{ withinDays() }} days</strong><mat-slider min="1" max="30"
+        step="1" discrete><input matSliderThumb [value]="withinDays()"
+          (valueChange)="setWindow($event)"></mat-slider></label><span class="radar-count">{{ expiring().length }}
+      clients to contact</span></section>
+  <table mat-table [dataSource]="expiring()" class="membership-table">
+    <ng-container matColumnDef="clientName">
+      <th mat-header-cell *matHeaderCellDef>Client</th>
+      <td mat-cell *matCellDef="let m">{{ m.clientName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let m">{{ m.phone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="reminder">
+      <th mat-header-cell *matHeaderCellDef>Reminder</th>
+      <td mat-cell *matCellDef="let m"><span class="reminder-status"><mat-icon>{{ m.telegramChatId ? 'send' : 'sms'
+            }}</mat-icon>{{ m.telegramChatId ? 'Telegram ready' : 'SMS ready' }}</span></td>
+    </ng-container>
+
+    <ng-container matColumnDef="expiryDate">
+      <th mat-header-cell *matHeaderCellDef>Expires</th>
+      <td mat-cell *matCellDef="let m">{{ m.expiryDate | date:'mediumDate' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let m">
+        <button mat-stroked-button color="primary" [disabled]="renewingClient() === m.clientId"
+          (click)="renew(m.clientId)">{{ renewingClient() === m.clientId ? 'Renewing...' : 'Renew 1 month' }}</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

@@ -1,0 +1,37 @@
+<div class="commission-page">
+  <header class="page-heading">
+    <p class="eyebrow">Manager finance</p>
+    <h2>Commission hub</h2>
+    <p>Know what the team has earned, at a glance.</p>
+  </header>
+  <section class="filters"><label>Staff member<select [value]="selectedStaff()"
+        (change)="setStaff($any($event.target).value)">@for (member of staff(); track member.id) { <option
+          [value]="member.id">{{ member.fullName }}</option> }</select></label>
+    <div class="range-tabs"><button type="button" [class.active]="range() === 'week'" (click)="setRange('week')">This
+        week</button><button type="button" [class.active]="range() === 'month'" (click)="setRange('month')">This
+        month</button><button type="button" [class.active]="range() === 'custom'"
+        (click)="setRange('custom')">Custom</button></div>@if (range() === 'custom') { <label>From<input type="date"
+        [value]="fromDate()" (change)="setFrom($any($event.target).value)"></label><label>To<input type="date"
+        [value]="toDate()" (change)="setTo($any($event.target).value)"></label> }
+  </section>
+  @if (report(); as summary) { <section class="metrics">
+    <article><span>Total revenue</span><strong>{{ summary.totalRevenue | number:'1.2-2' }} ETB</strong></article>
+    <article><span>Commission due</span><strong>{{ summary.totalCommission | number:'1.2-2' }} ETB</strong></article>
+    <article><span>Completed services</span><strong>{{ summary.paymentCount }}</strong></article>
+  </section>
+  <section class="transactions">
+    <div class="section-heading">
+      <h3>Paid transactions</h3><span>{{ summary.staffName }}</span>
+    </div>@if ((summary.transactions?.length ?? 0) === 0) { <p class="empty">No payments in this period.</p> } @for
+    (transaction of summary.transactions ?? []; track transaction.paymentId) { <div class="transaction">
+      <div><strong>{{ transaction.clientName }}</strong><small>{{ transaction.serviceName }} · {{ transaction.paidAt |
+          date:'mediumDate' }}</small></div>
+      <div class="transaction-actions">
+        <div class="amount"><strong>{{ transaction.amount | number:'1.2-2' }} ETB</strong><small>{{ transaction.commission
+            | number:'1.2-2' }} ETB commission</small></div>
+        <button type="button" class="del-tx-btn" (click)="deletePayment(transaction.paymentId)" title="Delete payment">×</button>
+      </div>
+    </div> }
+  </section> } @else if (isLoading()) { <div class="empty">Loading report...</div> } @else { <div class="empty">Select a
+    staff member to view the report.</div> }
+</div>

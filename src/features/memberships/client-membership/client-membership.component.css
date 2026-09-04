@@ -1,0 +1,205 @@
+.membership-page {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.page-heading .eyebrow {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #6366f1;
+  margin-bottom: 0.25rem;
+}
+
+.page-heading h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.page-heading p {
+  color: #64748b;
+  margin: 0;
+}
+
+.membership-hero-card {
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  color: #fff;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.membership-hero-card.active-pass {
+  background: linear-gradient(135deg, #065f46 0%, #022c22 100%);
+  border: 1px solid #10b981;
+}
+
+.membership-hero-card.expired-pass {
+  background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
+  border: 1px solid #ef4444;
+}
+
+.pass-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.brand-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.pass-brand h3 {
+  margin: 0.5rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.pass-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 1.5rem;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.days-num {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.expired-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.no-pass-card {
+  padding: 3rem;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  margin-bottom: 2.5rem;
+}
+
+.no-pass-card .card-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+.no-pass-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.no-pass-card p {
+  color: #64748b;
+  max-width: 460px;
+  margin: 0 auto 1.5rem;
+}
+
+.appointments-history {
+  margin-top: 1rem;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-title h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.section-title span {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.table-container {
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+table {
+  width: 100%;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-pill.confirmed {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-pill.completed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-pill.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.empty-table {
+  padding: 2.5rem;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #94a3b8;
+}

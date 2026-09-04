@@ -1,0 +1,68 @@
+<div class="client-list-container">
+  <div class="list-heading">
+    <div>
+      <p class="eyebrow">Client relationships</p>
+      <h2>Client CRM</h2>
+    </div><button mat-flat-button color="primary" type="button" (click)="showCreateForm.set(true)">＋ New client</button>
+  </div>
+  <mat-form-field appearance="outline" class="search-field"><mat-label>Search by name or phone</mat-label><input
+      matInput [formControl]="searchControl" placeholder="Start typing..." /><mat-icon
+      matSuffix>search</mat-icon></mat-form-field>
+
+  @if (showCreateForm()) {
+  <section class="create-panel">
+    <div class="panel-heading">
+      <h3>Add walk-in client</h3><button type="button" class="close-button"
+        (click)="showCreateForm.set(false)">×</button>
+    </div>
+    <form [formGroup]="createForm" (ngSubmit)="createClient()" class="create-form"><label>Full name<input
+          formControlName="fullName" placeholder="Client name"></label><label>Phone<input formControlName="phone"
+          placeholder="+251 ..."></label><label>Email<input formControlName="email" type="email"
+          placeholder="client@email.com"></label><label class="notes-field">Notes<textarea formControlName="notes"
+          rows="2" placeholder="Preferences, allergies, locker number..."></textarea></label>@if (createError()) { <p
+        class="form-error">{{ createError() }}</p> }<button mat-flat-button color="primary" type="submit"
+        [disabled]="createForm.invalid || isCreating()">{{ isCreating() ? 'Creating...' : 'Create client' }}</button>
+    </form>
+  </section>
+  }
+
+  <table mat-table [dataSource]="clients()" class="mat-elevation-z2">
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let client">{{ client.fullName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let client">{{ client.phone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="membershipStatus">
+      <th mat-header-cell *matHeaderCellDef>Membership</th>
+      <td mat-cell *matCellDef="let client">
+        <mat-chip [color]="client.isMembershipActive ? 'primary' : 'warn'" selected>
+          {{ client.isMembershipActive ? 'Active' : 'Expired' }}
+        </mat-chip>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let client">
+        <button mat-icon-button (click)="viewClient(client.id)" title="View Client">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteClient(client, $event)" title="Delete Client">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="totalCount()" [pageSize]="pageSize()" [pageSizeOptions]="[10, 20, 50]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>

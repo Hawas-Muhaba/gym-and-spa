@@ -1,0 +1,78 @@
+<div class="services-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">Offerings</p>
+      <h2>Services Catalog</h2>
+      <p>Configure treatments, gym packages, durations, and pricing.</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="openCreate()">
+      <mat-icon>add</mat-icon> Add Service
+    </button>
+  </header>
+
+  @if (showForm()) {
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Add New Service</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="serviceForm" (ngSubmit)="saveService()" class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Service Name</mat-label>
+            <input matInput formControlName="name" placeholder="e.g. Deep Tissue Massage" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Duration (minutes)</mat-label>
+            <input matInput type="number" step="15" min="5" formControlName="durationMinutes" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Price (ETB)</mat-label>
+            <input matInput type="number" step="50" min="0" formControlName="price" />
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="cancelForm()">Cancel</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="serviceForm.invalid">Save Service</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="table-container mat-elevation-z1">
+    <table mat-table [dataSource]="services()">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Service Name</th>
+        <td mat-cell *matCellDef="let s"><strong>{{ s.name }}</strong></td>
+      </ng-container>
+
+      <ng-container matColumnDef="durationMinutes">
+        <th mat-header-cell *matHeaderCellDef>Duration</th>
+        <td mat-cell *matCellDef="let s">{{ s.durationMinutes }} mins</td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let s">{{ s.price }} ETB</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let s" class="actions-cell">
+          <button mat-icon-button color="warn" (click)="deleteService(s)" title="Delete Service">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    @if (!isLoading() && services().length === 0) {
+      <div class="empty-state">No services configured yet.</div>
+    }
+  </div>
+</div>

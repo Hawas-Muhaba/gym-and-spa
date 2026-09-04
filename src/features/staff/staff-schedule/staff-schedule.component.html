@@ -1,0 +1,20 @@
+<div class="schedule-page">
+  <header class="page-heading"><p class="eyebrow">Daily operations</p><h2>Today's schedule</h2><p>Keep every appointment moving smoothly.</p></header>
+
+  <section class="toolbar">
+    <div class="date-switcher"><button type="button" (click)="shiftDate(-1)">←</button><button type="button" (click)="setToday()">Today</button><button type="button" (click)="shiftDate(1)">Tomorrow</button><input type="date" [value]="date()" (change)="setDate($any($event.target).value)"></div>
+    @if (isManager) { <label class="staff-filter">Staff member<select [value]="staffId()" (change)="setStaff($any($event.target).value)">@for (staff of staffList(); track staff.id) { <option [value]="staff.id">{{ staff.fullName }}</option> }</select></label> }
+  </section>
+
+  <div class="agenda-header"><span>{{ date() | date:'EEEE, MMMM d, y' }}</span><span>{{ visibleSchedule().length }} appointments</span></div>
+  @if (visibleSchedule().length === 0) { <div class="empty-state"><span>○</span><strong>A quiet day</strong><p>No appointments are booked for this date.</p></div> }
+  <div class="agenda">
+    @for (item of visibleSchedule(); track item.appointmentId) {
+      <article class="appointment" [class.cancelled]="item.status === 'Cancelled'">
+        <time>{{ item.startTime | date:'shortTime' }}</time><div class="appointment-line"></div>
+        <div class="appointment-info"><div><h3>{{ item.clientName }}</h3><p>{{ item.serviceName }}</p></div><div class="actions"><select [value]="item.status" [disabled]="isUpdating() === item.appointmentId" (change)="updateStatus(item, $any($event.target).value)">@for (status of statusOptions; track status) { <option [value]="status">{{ status }}</option> }</select>@if (item.status === 'Completed') { <button type="button" class="payment-action" (click)="openPayment(item)">Record payment</button> }<button type="button" class="cancel-action" [disabled]="item.status === 'Cancelled' || isUpdating() === item.appointmentId" (click)="cancel(item)">Cancel</button></div></div>
+      </article>
+    }
+  </div>
+  @if (paymentItem(); as item) { <div class="payment-backdrop" (click)="closePayment()"><section class="payment-panel" (click)="$event.stopPropagation()"><div class="panel-heading"><div><p class="eyebrow">Completed service</p><h3>Record payment</h3></div><button type="button" class="close-button" (click)="closePayment()">×</button></div><p class="payment-client">{{ item.clientName }} <span>{{ item.serviceName }}</span></p><label>Amount received<input type="number" min="0.01" step="0.01" [value]="paymentAmount()" (input)="setPaymentAmount($any($event.target).value)"></label><div class="commission-preview"><span>Staff commission</span><strong>{{ commissionPreview() | number:'1.2-2' }} ETB</strong></div>@if (paymentError()) { <p class="payment-error">{{ paymentError() }}</p> }<button type="button" class="confirm-payment" [disabled]="paymentAmount() <= 0 || isRecordingPayment()" (click)="recordPayment()">{{ isRecordingPayment() ? 'Recording...' : 'Record payment' }}</button></section></div> }
+</div>

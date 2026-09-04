@@ -1,0 +1,36 @@
+.commission-report-container {
+  padding: 20px;
+}
+
+.commission-page { max-width: 1100px; }
+.page-heading { margin-bottom: 30px; }
+.eyebrow { margin: 0 0 9px; color: #9b7946; font: 600 10px Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+h2 { margin: 0; color: #252522; font: 400 42px/1 Georgia, serif; }
+.page-heading p:last-child { margin: 12px 0 0; color: #788078; font: 14px Arial, sans-serif; }
+.filters { display: flex; align-items: end; flex-wrap: wrap; gap: 15px; padding: 18px 20px; border: 1px solid #dfd9ce; background: #fbfaf7; }
+label { display: grid; gap: 7px; color: #687067; font: 600 10px Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+select, input { min-width: 170px; height: 38px; padding: 0 9px; border: 1px solid #d6d1c7; background: #fff; color: #252522; font: 12px Arial, sans-serif; }
+.range-tabs { display: flex; align-items: center; }
+.range-tabs button { height: 38px; padding: 0 13px; border: 1px solid #d6d1c7; border-right: 0; background: #fbfaf7; color: #687067; font: 600 11px Arial, sans-serif; cursor: pointer; }
+.range-tabs button:last-child { border-right: 1px solid #d6d1c7; }
+.range-tabs button.active { background: #202522; color: #fff; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin: 24px 0; }
+.metrics article { padding: 22px; border: 1px solid #dfd9ce; background: #fbfaf7; }
+.metrics span, .metrics strong { display: block; }
+.metrics span { color: #788078; font: 11px Arial, sans-serif; text-transform: uppercase; letter-spacing: .09em; }
+.metrics strong { margin-top: 14px; color: #252522; font: 400 24px Georgia, serif; }
+.transactions { border-top: 1px solid #dfd9ce; }
+.section-heading { display: flex; justify-content: space-between; padding: 24px 0 12px; }
+.section-heading h3 { margin: 0; font: 400 21px Georgia, serif; }
+.section-heading span { color: #9b7946; font: 11px Arial, sans-serif; }
+.transaction { display: flex; justify-content: space-between; gap: 15px; padding: 16px 0; border-top: 1px solid #e8e3da; }
+.transaction strong, .transaction small { display: block; }
+.transaction strong { color: #252522; font: 600 13px Arial, sans-serif; }
+.transaction small { margin-top: 5px; color: #788078; font: 11px Arial, sans-serif; }
+.transaction-actions { display: flex; align-items: center; gap: 12px; }
+.del-tx-btn { background: none; border: 1px solid #e8e3da; border-radius: 4px; color: #b91c1c; font-size: 16px; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.del-tx-btn:hover { background: #fee2e2; border-color: #fca5a5; }
+.amount { text-align: right; }
+.amount small { color: #6e8a6d; }
+.empty { padding: 42px 20px; text-align: center; color: #8b9086; font: 13px Arial, sans-serif; }
+@media (max-width: 680px) { h2 { font-size: 34px; } .filters { align-items: stretch; flex-direction: column; } select, input { width: 100%; } .range-tabs { width: 100%; } .range-tabs button { flex: 1; padding: 0 5px; } .metrics { grid-template-columns: 1fr; } }
