@@ -1,44 +1,166 @@
 <div class="radar-page">
   <header class="page-heading">
-    <p class="eyebrow">Retention radar</p>
-    <h2>Expiring memberships</h2>
-    <p>Reach out before clients drift away.</p>
+    <div>
+      <p class="eyebrow">Client Subscriptions</p>
+      <h2>Memberships Hub</h2>
+      <p>Assign gym passes, track renewals, and manage client retention.</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="openAssignModal()">
+      <mat-icon>add_card</mat-icon> Assign / Renew Membership
+    </button>
   </header>
-  <section class="radar-controls"><label>Look ahead <strong>{{ withinDays() }} days</strong><mat-slider min="1" max="30"
-        step="1" discrete><input matSliderThumb [value]="withinDays()"
-          (valueChange)="setWindow($event)"></mat-slider></label><span class="radar-count">{{ expiring().length }}
-      clients to contact</span></section>
-  <table mat-table [dataSource]="expiring()" class="membership-table">
-    <ng-container matColumnDef="clientName">
-      <th mat-header-cell *matHeaderCellDef>Client</th>
-      <td mat-cell *matCellDef="let m">{{ m.clientName }}</td>
-    </ng-container>
 
-    <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef>Phone</th>
-      <td mat-cell *matCellDef="let m">{{ m.phone }}</td>
-    </ng-container>
+  @if (showAssignDialog()) {
+    <mat-card class="assign-card mat-elevation-z3">
+      <mat-card-header>
+        <div class="card-header-row">
+          <mat-card-title>Assign or Extend Gym Membership</mat-card-title>
+          <button mat-icon-button (click)="closeAssignModal()"><mat-icon>close</mat-icon></button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="assignForm" (ngSubmit)="submitAssign()" class="assign-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Client</mat-label>
+            <mat-select formControlName="clientId">
+              @for (c of allClients(); track c.id) {
+                <mat-option [value]="c.id">{{ c.fullName }} ({{ c.phone }})</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
-    <ng-container matColumnDef="reminder">
-      <th mat-header-cell *matHeaderCellDef>Reminder</th>
-      <td mat-cell *matCellDef="let m"><span class="reminder-status"><mat-icon>{{ m.telegramChatId ? 'send' : 'sms'
-            }}</mat-icon>{{ m.telegramChatId ? 'Telegram ready' : 'SMS ready' }}</span></td>
-    </ng-container>
+          <mat-form-field appearance="outline">
+            <mat-label>Pass Duration</mat-label>
+            <mat-select formControlName="durationMonths">
+              <mat-option [value]="1">1 Month Pass</mat-option>
+              <mat-option [value]="3">3 Months Pass (Quarterly)</mat-option>
+              <mat-option [value]="6">6 Months Pass (Bi-Annual)</mat-option>
+              <mat-option [value]="12">12 Months Pass (Annual VIP)</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-    <ng-container matColumnDef="expiryDate">
-      <th mat-header-cell *matHeaderCellDef>Expires</th>
-      <td mat-cell *matCellDef="let m">{{ m.expiryDate | date:'mediumDate' }}</td>
-    </ng-container>
+          <div class="form-actions">
+            <button mat-button type="button" (click)="closeAssignModal()">Cancel</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="assignForm.invalid || isAssigning()">
+              {{ isAssigning() ? 'Processing...' : 'Confirm & Activate Pass' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let m">
-        <button mat-stroked-button color="primary" [disabled]="renewingClient() === m.clientId"
-          (click)="renew(m.clientId)">{{ renewingClient() === m.clientId ? 'Renewing...' : 'Renew 1 month' }}</button>
-      </td>
-    </ng-container>
+  <mat-tab-group animationDuration="200ms" class="membership-tabs">
+    <!-- TAB 1: Expiring Soon -->
+    <mat-tab label="Expiring Soon (Retention Radar)">
+      <div class="tab-body">
+        <section class="radar-controls">
+          <label>
+            Look ahead <strong>{{ withinDays() }} days</strong>
+            <mat-slider min="1" max="30" step="1" discrete>
+              <input matSliderThumb [value]="withinDays()" (valueChange)="setWindow($event)" />
+            </mat-slider>
+          </label>
+          <span class="radar-count">{{ expiring().length }} clients need attention</span>
+        </section>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <div class="table-container mat-elevation-z1">
+          <table mat-table [dataSource]="expiring()" class="membership-table">
+            <ng-container matColumnDef="clientName">
+              <th mat-header-cell *matHeaderCellDef>Client</th>
+              <td mat-cell *matCellDef="let m">
+                <strong>{{ m.clientName }}</strong>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef>Phone</th>
+              <td mat-cell *matCellDef="let m">{{ m.phone }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="reminder">
+              <th mat-header-cell *matHeaderCellDef>Channel</th>
+              <td mat-cell *matCellDef="let m">
+                <span class="reminder-status">
+                  <mat-icon>{{ m.telegramChatId ? 'send' : 'sms' }}</mat-icon>
+                  {{ m.telegramChatId ? 'Telegram ready' : 'SMS ready' }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expiryDate">
+              <th mat-header-cell *matHeaderCellDef>Expires</th>
+              <td mat-cell *matCellDef="let m">{{ m.expiryDate | date:'mediumDate' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let m" class="actions-cell">
+                <button mat-stroked-button color="primary" [disabled]="renewingClient() === m.clientId" (click)="renew(m.clientId, 1)">
+                  {{ renewingClient() === m.clientId ? 'Renewing...' : 'Renew 1 month' }}
+                </button>
+                <button mat-icon-button (click)="openAssignModal(m.clientId)" title="Custom renewal">
+                  <mat-icon>more_time</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          @if (expiring().length === 0) {
+            <div class="empty-state">No memberships expiring within {{ withinDays() }} days.</div>
+          }
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- TAB 2: All Clients Directory -->
+    <mat-tab label="All Client Memberships">
+      <div class="tab-body">
+        <div class="table-container mat-elevation-z1">
+          <table mat-table [dataSource]="allClients()" class="client-table">
+            <ng-container matColumnDef="fullName">
+              <th mat-header-cell *matHeaderCellDef>Client Name</th>
+              <td mat-cell *matCellDef="let c"><strong>{{ c.fullName }}</strong></td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef>Phone</th>
+              <td mat-cell *matCellDef="let c">{{ c.phone }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Membership Status</th>
+              <td mat-cell *matCellDef="let c">
+                <mat-chip [highlighted]="c.isMembershipActive" [color]="c.isMembershipActive ? 'primary' : undefined">
+                  {{ c.isMembershipActive ? 'Active' : 'Inactive / Expired' }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let c" class="actions-cell">
+                <button mat-stroked-button color="primary" (click)="openAssignModal(c.id)">
+                  <mat-icon>card_membership</mat-icon> {{ c.isMembershipActive ? 'Extend Pass' : 'Assign Pass' }}
+                </button>
+                <button mat-icon-button (click)="viewClient(c.id)" title="View Client CRM">
+                  <mat-icon>person</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="clientColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: clientColumns;"></tr>
+          </table>
+
+          @if (!isLoadingClients() && allClients().length === 0) {
+            <div class="empty-state">No clients found in the system.</div>
+          }
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>

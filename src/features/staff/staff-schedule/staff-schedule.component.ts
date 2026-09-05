@@ -139,6 +139,7 @@ export class StaffScheduleComponent implements OnInit {
     this.paymentService.recordPayment({ appointmentId: item.appointmentId, amount: this.paymentAmount() }).subscribe({
       next: () => {
         this.isRecordingPayment.set(false);
+        this.schedule.update(items => items.map(curr => curr.appointmentId === item.appointmentId ? { ...curr, status: 'Completed' as BookingStatus } : curr));
         this.closePayment();
       },
       error: () => {

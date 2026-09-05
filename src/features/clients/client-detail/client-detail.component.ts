@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe, CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -10,6 +10,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClientService } from '../../../core/services/client.service';
 import { AppointmentService } from '../../../core/services/appointment.service';
@@ -35,6 +36,7 @@ import { Membership } from '../../../core/models/membership.model';
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatSnackBarModule,
   ],
   templateUrl: './client-detail.component.html',
@@ -67,6 +69,14 @@ export class ClientDetailComponent implements OnInit {
   ];
 
   appointmentColumns = ['id', 'serviceName', 'staffName', 'startTime', 'status', 'actions'];
+
+  payableAppointments = computed(() =>
+    this.appointments().filter((a) => a.status !== 'Cancelled')
+  );
+
+  onSelectAppointmentForPayment(id: number) {
+    this.payingAppointmentId.set(id);
+  }
 
   profileForm = new FormGroup({
     fullName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),

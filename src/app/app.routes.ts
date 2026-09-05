@@ -34,6 +34,7 @@ export const routes: Routes = [
           { path: 'clients', loadComponent: () => import('../features/clients/client-list/client-list.component').then(m => m.ClientListComponent) },
           { path: 'clients/:id', loadComponent: () => import('../features/clients/client-detail/client-detail.component').then(m => m.ClientDetailComponent) },
           { path: 'schedule', loadComponent: () => import('../features/staff/staff-schedule/staff-schedule.component').then(m => m.StaffScheduleComponent) },
+          { path: 'memberships', loadComponent: () => import('../features/memberships/expiring-list/expiring-list.component').then(m => m.ExpiringListComponent) },
           { path: 'memberships/expiring', loadComponent: () => import('../features/memberships/expiring-list/expiring-list.component').then(m => m.ExpiringListComponent) },
           { path: 'staff', loadComponent: () => import('../features/staff/staff-list/staff-list.component').then(m => m.StaffListComponent), canActivate: [roleGuard(['Manager'])] },
           { path: 'services', loadComponent: () => import('../features/services/service-list/service-list.component').then(m => m.ServiceListComponent), canActivate: [roleGuard(['Manager'])] },

@@ -24,8 +24,11 @@ h3 { margin: 0; color: #252522; font: 600 16px Arial, sans-serif; }
 .actions { display: flex; align-items: center; gap: 10px; }
 .cancel-action { border: 0; background: transparent; color: #a14f3f; font: 600 11px Arial, sans-serif; cursor: pointer; }
 .cancel-action:disabled { color: #bfc1ba; cursor: not-allowed; }
+.confirm-action { border: 1px solid #2e7d32; background: #e8f5e9; color: #1b5e20; font: 600 11px Arial, sans-serif; cursor: pointer; }
+.confirm-action:hover { background: #c8e6c9; }
+.confirm-action:disabled { opacity: 0.5; cursor: not-allowed; }
 .payment-action { border: 1px solid #b3864a; background: #fffaf0; color: #8d6937; font: 600 11px Arial, sans-serif; cursor: pointer; }
-.payment-action, .cancel-action { min-height: 32px; padding: 0 10px; }
+.payment-action, .cancel-action, .confirm-action { min-height: 32px; padding: 0 10px; }
 .payment-backdrop { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px; background: rgba(32, 37, 34, .58); }
 .payment-panel { width: min(100%, 430px); padding: 26px; background: #fbfaf7; box-shadow: 0 22px 70px rgba(0, 0, 0, .25); }
 .panel-heading { display: flex; justify-content: space-between; align-items: start; }

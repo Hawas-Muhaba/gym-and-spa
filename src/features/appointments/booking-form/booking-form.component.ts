@@ -7,8 +7,9 @@ import { ServiceCatalogService } from '../../../core/services/service-catalog.se
 import { AppointmentService } from '../../../core/services/appointment.service';
 import { ClientService } from '../../../core/services/client.service';
 import { StaffListItem, TimeSlot } from '../../../core/models/staff.model';
-import { ServiceItem } from '../../../core/models/service.model';
 import { ClientListItem } from '../../../core/models/client.model';
+import { ServiceItem } from '../../../core/models/service.model';
+import { AuthStore } from '../../../core/stores/auth.store';
 
 @Component({
   selector: 'app-booking-form',
@@ -22,6 +23,7 @@ export class BookingFormComponent implements OnInit {
   private serviceCatalogService = inject(ServiceCatalogService);
   private appointmentService = inject(AppointmentService);
   private clientService = inject(ClientService);
+  private authStore = inject(AuthStore);
   private snackBar = inject(MatSnackBar);
 
   staffList = signal<StaffListItem[]>([]);
@@ -105,7 +107,11 @@ export class BookingFormComponent implements OnInit {
       startTime: startTimeUtc,
     }).subscribe({
       next: () => {
-        this.snackBar.open('Appointment booked!', 'Close', { duration: 3000 });
+        const isClient = this.authStore.user()?.role === 'Client';
+        const msg = isClient
+          ? 'Booking requested! Your appointment is Pending staff confirmation.'
+          : 'Appointment booked and confirmed!';
+        this.snackBar.open(msg, 'Close', { duration: 5000 });
         this.bookingForm.patchValue({ serviceId: null, staffId: null, startTime: null, date: this.today });
         this.timeSlots.set([]);
         this.isSubmitting.set(false);

@@ -181,6 +181,41 @@ table {
   margin-bottom: 1rem;
 }
 
+.assign-btn-group {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.quick-confirm-btn {
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+.settled-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #15803d;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.settled-tag mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.appt-select-field {
+  flex: 2;
+}
+
+.amount-field {
+  flex: 1;
+}
+
 .loading-state,
 .empty-state {
   text-align: center;
